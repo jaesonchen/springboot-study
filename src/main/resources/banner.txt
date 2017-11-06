@@ -1,0 +1,2 @@
+welcome to spring-boot!
+spring-boot: ${spring-boot.version}
