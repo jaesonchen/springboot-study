@@ -15,19 +15,22 @@ import org.springframework.web.servlet.ModelAndView;
  * Copyright: 	  北京亚信智慧数据科技有限公司
  */
 public class SessionInterceptor implements HandlerInterceptor {
+    
+    static final String LOGIN = "/login";
+    static final String LOGIN_VIEW = "/login_view";
 	
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object o) throws Exception {
     	
         System.out.println(request.getRequestURI());
         //登录不做拦截
-        if (request.getRequestURI().equals("/login") || request.getRequestURI().equals("/login_view")) {
+        if (LOGIN.equals(request.getRequestURI()) || LOGIN_VIEW.equals(request.getRequestURI())) {
             return true;
         }
         //验证session是否存在
         Object obj = request.getSession().getAttribute("_session_user");
         if (obj == null) {
-            response.sendRedirect("/login_view");
+            response.sendRedirect(LOGIN_VIEW);
             return false;
         }
         return true;

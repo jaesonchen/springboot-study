@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class IndexController {
 
     @RequestMapping(value = "/login_view", method = RequestMethod.GET)
-    public String login_view() {
+    public String loginView() {
         return "login";
     }
 
