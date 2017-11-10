@@ -115,7 +115,13 @@
 		    <groupId>org.springframework.kafka</groupId>
 		    <artifactId>spring-kafka</artifactId>
 		</dependency>
-					        
+
+        <!-- 引入邮件依赖模块 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-mail</artifactId>
+        </dependency>
+        					        
 		<!-- logging adapter & logback -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
