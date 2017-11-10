@@ -16,6 +16,7 @@
 		<java.version>1.8</java.version>
 		<!-- Override parent dependency version -->
 		<commons-dbcp.version>1.4</commons-dbcp.version>
+		<mybatis-spring-boot>1.2.0</mybatis-spring-boot>
   	</properties>
 
 	<!-- Inherit defaults from Spring Boot -->
@@ -96,13 +97,20 @@
 	    	<groupId>mysql</groupId>
 	    	<artifactId>mysql-connector-java</artifactId>
 	    </dependency>
-	    		
+        <!-- Spring Boot Mybatis 依赖 -->
+        <dependency>
+            <groupId>org.mybatis.spring.boot</groupId>
+            <artifactId>mybatis-spring-boot-starter</artifactId>
+            <version>${mybatis-spring-boot}</version>
+        </dependency>
+        	    		
 		<!-- redis -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-redis</artifactId>
 		</dependency>
 		
+		<!-- kafka -->
 		<dependency>
 		    <groupId>org.springframework.kafka</groupId>
 		    <artifactId>spring-kafka</artifactId>
