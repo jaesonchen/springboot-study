@@ -24,7 +24,7 @@ public class ScheduleTask {
 		logger.info("cron execute...");
 	}
 	
-	@Scheduled(fixedRate=5000)
+	@Scheduled(fixedRateString="${fixRate.ms}")
 	public void fixRate() {
 		try {
 			logger.info("fixRate start...");
