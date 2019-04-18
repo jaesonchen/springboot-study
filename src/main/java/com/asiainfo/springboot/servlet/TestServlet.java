@@ -9,8 +9,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 /**
- * 
- * @Description: TODO
+ * @WebServlet 配置servlet
  * 
  * @author       zq
  * @date         2017年10月22日  下午5:32:29

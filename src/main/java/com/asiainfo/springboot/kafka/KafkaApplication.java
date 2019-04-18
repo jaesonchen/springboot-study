@@ -3,6 +3,8 @@ package com.asiainfo.springboot.kafka;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
+import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @date         2017年11月3日  上午11:16:09
  * Copyright: 	  北京亚信智慧数据科技有限公司
  */
-@SpringBootApplication
+@SpringBootApplication(exclude={DataSourceAutoConfiguration.class, HibernateJpaAutoConfiguration.class})
 @ComponentScan("com.asiainfo.springboot.kafka")
 @RestController
 public class KafkaApplication {
@@ -26,12 +28,13 @@ public class KafkaApplication {
 	
 	@RequestMapping("/produce/request/{message}")
 	String produce(@PathVariable("message") String message) {
-		kafkaTemplate.send("com.asiainfo.bdx.cgf.request", message);
+		kafkaTemplate.send("com.asiainfo.request", message);
 		return "success";
 	}
+	
 	@RequestMapping("/produce/response/{message}")
 	String produce1(@PathVariable("message") String message) {
-		kafkaTemplate.send("com.asiainfo.bdx.cgf.response", message);
+		kafkaTemplate.send("com.asiainfo.response", message);
 		return "success";
 	}
 	

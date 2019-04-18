@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 /**
- * @Description: TODO
+ * multi-datasource配置
  * 
  * @author       zq
  * @date         2017年10月20日  下午3:44:51

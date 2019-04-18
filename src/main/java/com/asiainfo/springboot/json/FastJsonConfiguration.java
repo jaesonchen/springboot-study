@@ -11,8 +11,7 @@ import com.alibaba.fastjson.support.config.FastJsonConfig;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
 
 /**
- * 
- * @Description: TODO
+ * @Description: 配置HttpMessageConverter，添加object转json的转换器
  * 
  * @author       zq
  * @date         2017年10月22日  下午10:20:40

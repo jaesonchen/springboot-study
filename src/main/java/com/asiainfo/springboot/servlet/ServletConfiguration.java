@@ -4,8 +4,7 @@ import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * 
- * @Description: TODO
+ * @ServletComponentScan 扫描servlet注解
  * 
  * @author       zq
  * @date         2017年10月22日  下午5:34:18

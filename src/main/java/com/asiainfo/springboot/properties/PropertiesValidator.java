@@ -7,6 +7,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
 
 /**
+ * yml && properties
+ * 
  * 1.
 	environments:
 	    dev:

@@ -12,7 +12,7 @@ import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 /**
- * TODO
+ * redis配置
  * 
  * @author       zq
  * @date         2017年11月1日  下午5:37:36

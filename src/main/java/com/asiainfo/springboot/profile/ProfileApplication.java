@@ -3,6 +3,8 @@ package com.asiainfo.springboot.profile;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
+import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -24,9 +26,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @Configuration
-@EnableAutoConfiguration
+@EnableAutoConfiguration(exclude={DataSourceAutoConfiguration.class, HibernateJpaAutoConfiguration.class})
 @ComponentScan("com.asiainfo.springboot.profile")
-@Profile({"test", "product"})
+@Profile({"dev", "release"})
 public class ProfileApplication {
 
 	@Value("${name}")
@@ -45,7 +47,7 @@ public class ProfileApplication {
 	public static void main(String[] args) {
 		
 		SpringApplication app = new SpringApplication(new Object[] {ProfileApplication.class});
-		app.setAdditionalProfiles(new String[] {"product"});
+		app.setAdditionalProfiles(new String[] {"release"});
 		app.run(args);
 	}
 }

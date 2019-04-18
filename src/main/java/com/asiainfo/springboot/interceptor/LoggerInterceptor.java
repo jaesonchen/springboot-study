@@ -6,6 +6,8 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -13,8 +15,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 
 /**
- * 
- * @Description: TODO
+ * log操作日志拦截
  * 
  * @author       zq
  * @date         2017年10月22日  下午11:00:15
@@ -22,6 +23,8 @@ import com.alibaba.fastjson.serializer.SerializerFeature;
  */
 public class LoggerInterceptor implements HandlerInterceptor {
 	
+    final Logger logger = LoggerFactory.getLogger(getClass());
+    
     public static final String START_TIME = "_start_time";
     public static final String REQUEST_ENTITY = "_request_entity";
     public static final String RESPONSE_ENTITY = "_response_entity";
@@ -74,7 +77,7 @@ public class LoggerInterceptor implements HandlerInterceptor {
         map.put("response", JSON.toJSONString(request.getAttribute(RESPONSE_ENTITY),
                 SerializerFeature.DisableCircularReferenceDetect,
                 SerializerFeature.WriteMapNullValue));
-
-        //执行将日志写入数据库
+        //保存日志
+        logger.info("操作日志：{}", JSON.toJSONString(map));
     }
 }

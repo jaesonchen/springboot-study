@@ -2,6 +2,8 @@ package com.asiainfo.springboot.listener;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
+import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.ComponentScan;
@@ -14,7 +16,7 @@ import org.springframework.context.annotation.ComponentScan;
  * Copyright: 	  北京亚信智慧数据科技有限公司
  */
 
-@SpringBootApplication
+@SpringBootApplication(exclude={DataSourceAutoConfiguration.class, HibernateJpaAutoConfiguration.class})
 @ComponentScan("com.asiainfo.springboot.listener")
 public class ListenerApplication {
 
@@ -37,6 +39,5 @@ public class ListenerApplication {
 		//不启用web context，非web在run之后会直接退出
 		app.setWebEnvironment(false);
 		app.run(args);
-		//app.run(args).close();
 	}
 }

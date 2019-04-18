@@ -3,6 +3,8 @@ package com.asiainfo.springboot.mybatis;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.data.jpa.JpaRepositoriesAutoConfiguration;
+import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @date         2017年11月10日  上午10:58:23
  * Copyright: 	  北京亚信智慧数据科技有限公司
  */
-@SpringBootApplication
+@SpringBootApplication(exclude={HibernateJpaAutoConfiguration.class, JpaRepositoriesAutoConfiguration.class})
 @ComponentScan("com.asiainfo.springboot.mybatis")
 @RestController
 public class MybatisApplication {

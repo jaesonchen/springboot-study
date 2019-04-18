@@ -3,6 +3,8 @@ package com.asiainfo.springboot.properties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
+import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
  * properties文件覆盖优先级(高->低)：
  * 	application-{profile}.properties(outside jar)
  * 	application-{profile}.properties(inside jar)
+ *  application-defalut.properties
  * 	application.properties(outside jar)
  * 	application.properties(inside jar)
  * @Configuration
@@ -26,7 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
  * Copyright: 	  北京亚信智慧数据科技有限公司
  */
 @RestController
-@SpringBootApplication
+@SpringBootApplication(exclude={DataSourceAutoConfiguration.class, HibernateJpaAutoConfiguration.class})
 @ComponentScan("com.asiainfo.springboot.properties")
 public class PropertiesApplication {
 	
