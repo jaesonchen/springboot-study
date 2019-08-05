@@ -1,0 +1,36 @@
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.asiainfo.springboot.mybatis.dao.DepartmentDao">
+
+    <resultMap id="deptResult" type="Department">
+        <id property="id" column="id" />
+        <result property="parentId" column="parent_id" />
+        <result property="deptName" column="dept_name" />
+    </resultMap>
+    
+    <select id="findAll" resultMap="deptResult">
+        select id, parent_id, dept_name
+        from department
+        order by parent_id
+    </select>
+    
+    <select id="findById" parameterType="long" resultMap="deptResult">
+        select id, parent_id, dept_name
+        from department
+        where id=#{id}
+    </select>
+    
+    <insert id="save" parameterType="Department" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        insert into department(parent_id, dept_name) values(#{parentId}, #{deptName})
+    </insert>
+
+    <update id="update" parameterType="Department">
+        update department set parent_id=#{parentId}, dept_name=#{deptName} where id=#{id}
+    </update>
+
+    <delete id="delete" parameterType="long">
+        delete from department where id=#{id}
+    </delete>
+</mapper>

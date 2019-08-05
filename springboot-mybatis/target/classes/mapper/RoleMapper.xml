@@ -1,0 +1,55 @@
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.asiainfo.springboot.mybatis.dao.RoleDao">
+
+    <resultMap id="roleResult" type="Role">
+        <id property="id" column="id" />
+        <result property="roleName" column="role_name" />
+        <result property="roleType" column="role_type" />
+    </resultMap>
+    
+    <sql id="selectRoleList" >
+        id,
+        role_name,
+        role_type
+    </sql>
+    
+    <select id="findAll" resultMap="roleResult">
+        select 
+            <include refid="selectRoleList" />
+        from role
+        order by role_type
+    </select>
+    
+    <select id="findById" parameterType="long" resultMap="roleResult">
+        select 
+            <include refid="selectRoleList" />
+        from role
+        where id=#{id}
+    </select>
+    
+    <select id="findByIds" resultMap="roleResult">
+        select 
+            <include refid="selectRoleList" />
+        from role
+        where id in 
+        <foreach collection="array" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+    
+    <!-- enum枚举值插入 -->
+    <insert id="save" parameterType="Role" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        insert into role(role_name, role_type) values(#{roleName}, #{roleType, jdbcType=VARCHAR})
+    </insert>
+
+    <update id="update" parameterType="Role">
+        update role set role_name=#{roleName}, role_type=#{roleType, jdbcType=VARCHAR} where id=#{id}
+    </update>
+
+    <delete id="delete" parameterType="long">
+        delete from role where id=#{id}
+    </delete>
+</mapper>

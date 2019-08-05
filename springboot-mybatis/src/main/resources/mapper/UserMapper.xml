@@ -1,0 +1,169 @@
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.asiainfo.springboot.mybatis.dao.UserDao">
+
+    <!-- resultMap -->
+    <resultMap id="userResult" type="User">
+        <id property="id" column="id" />
+        <result property="userName" column="user_name" />
+        <result property="password" column="password" />
+        <association property="dept" javaType="Department">
+            <id property="id" column="department_id" />
+            <result property="parentId" column="parent_id" />
+            <result property="deptName" column="dept_name" />
+        </association>
+    </resultMap>
+
+    <!-- resultMap extends -->
+	<resultMap id="userRoleResult" type="User" extends="userResult">
+        <!-- 嵌套查询 -->
+        <collection property="contacts" javaType="ArrayList" ofType="Contact">
+            <id property="id" column="contact_id" />
+            <result property="userId" column="user_id" />
+            <result property="address" column="address" />
+            <result property="zipCode" column="zip_code" />
+        </collection>
+        <!-- select查询，多一次查询 -->  
+        <collection property="roles" javaType="ArrayList" ofType="Role" column="id" select="selectRole" />
+	</resultMap>
+	
+	<!-- enum枚举值转换 -->
+    <!-- org.apache.ibatis.type.EnumTypeHandler 默认选项，使用枚举实例名称来和对应的枚举类之间做转换
+         org.apache.ibatis.type.EnumOrdinalTypeHandler 使用枚举实例的 ordinal 值（序数值，从0开始）
+         typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" -->
+	<resultMap id="roleResult" type="Role">
+        <id property="id" column="id" />
+        <result property="roleName" column="role_name" />
+        <result property="roleType" column="role_type" />
+	</resultMap>
+	<select id="selectRole" resultMap="roleResult">
+        select 
+            r.id, r.role_name, r.role_type
+        from user_role ur 
+        join role r on ur.role_id=r.id 
+        where ur.user_id=#{id}
+	</select>
+	
+    <sql id="selectUserColumnList" >
+        u.id,
+        u.user_name,
+        u.password,
+        u.dept_id,
+        d.id as department_id,
+        d.dept_name,
+        d.parent_id
+    </sql>
+    <sql id="selectUserInfoColumnList" >
+        u.id,
+        u.user_name,
+        u.password,
+        u.dept_id,
+        d.id as department_id,
+        d.dept_name,
+        d.parent_id,
+        c.id as contact_id,
+        c.user_id,
+        c.address,
+        c.zip_code
+    </sql>
+    
+    <select id="findAll" resultMap="userResult" databaseId="mysql">
+        select 
+            <include refid="selectUserColumnList" />
+        from user u 
+        left join department d on u.dept_id=d.id 
+        order by u.dept_id, u.id
+    </select>
+
+	<select id="findById" parameterType="long" resultMap="userRoleResult" databaseId="mysql">
+        select 
+            <include refid="selectUserInfoColumnList" />
+        from user u 
+        left join department d on u.dept_id=d.id 
+        left join contact c on u.id=c.user_id
+		where u.id=#{id}
+	</select>
+	
+	<!-- like -->
+    <!-- like '%${userName}%' ${}是参数直接注入会导致sql注入
+         like concat('%', #{userName}, '%') 
+         like '%' || #{userName} || '%'
+         new StringBuilder("%").append(userName).append("%").toString() -->
+    <select id="findByUserName" resultMap="userResult" databaseId="mysql">
+        select 
+            <include refid="selectUserColumnList" />
+        from user u 
+        left join department d on u.dept_id=d.id 
+        where u.user_name like concat('%', #{userName}, '%') 
+        order by u.dept_id, u.id
+    </select>
+    
+	<!-- 新增，自增主键值注入User对象，返回受影响的行数 -->
+    <insert id="save" parameterType="User" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        insert into user
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            user_name, password, 
+            <if test="dept != null">
+                dept_id, 
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            #{userName}, #{password},
+            <if test="dept != null">
+                #{dept.id},
+            </if>
+        </trim>
+    </insert>
+    
+    <!-- 多参数传递时不能使用parameterType -->
+    <!-- id=#{0} and name=#{1}
+         parameterType="java.util.Map"
+         parameterType="User"
+         java.util.List <foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+         public User findByIdAndName(@Param("id") long id, @Param("name") String name) -->
+
+    <insert id="addContact" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        insert into contact(user_id, address, zip_code) 
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.userId}, #{item.address}, #{item.zipCode})
+        </foreach>
+    </insert>
+    
+    <!-- 保存list -->
+    <insert id="addUserRole" parameterType="User">
+        insert into user_role(user_id, role_id) 
+        values
+        <foreach collection="roles" item="item" index="index" separator=",">
+            (#{id}, #{item.id})
+        </foreach>
+    </insert>
+    
+    <!-- 更新，返回受影响的行数 -->
+    <update id="update" parameterType="User">
+        update user set 
+            user_name=#{userName}, password=#{password}
+            <if test="dept != null">
+                , dept_id=dept.id
+            </if>
+            <if test="dept == null">
+                , dept_id=0
+            </if>
+        where id=#{id}
+    </update>
+    
+    <!-- 删除，返回受影响的行数 -->
+    <delete id="delete" parameterType="long">
+        delete from user where id=#{id}
+    </delete>
+
+    <delete id="deleteUserRole" parameterType="long">
+        delete from user_role where user_id=#{id}
+    </delete>
+    
+    <delete id="deleteContact" parameterType="long">
+        delete from contact where user_id=#{id}
+    </delete>
+</mapper>

@@ -1,0 +1,10 @@
+spring:
+    application:
+        name: springboot-application
+
+server:
+    port:
+        8080
+
+service: 
+    welcome: welcome

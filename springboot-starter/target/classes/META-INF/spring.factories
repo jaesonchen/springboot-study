@@ -1,0 +1,3 @@
+# springboot autoconfigure
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.asiainfo.springboot.autoconfigure.ServiceAutoConfigure

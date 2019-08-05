@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>filelist</title>
+</head>
+<body>
+    <h1>file list</h1>
+    
+    <a th:href="@{/download(fileName=${fileName})}">下载</a>
+    <div style = "padding: 3px; border: solid 1px #cccccc; text-align: center" >
+        <img th:src="${fileUrl}" />
+    </div>
+</body>
+</html>

@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+    PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-config.dtd">
+    
+<configuration>
+
+    <!-- 如果属性在不只一个地方进行了配置，那么 MyBatis 将按照下面的顺序来加载：
+         1. 在 properties 元素体内指定的属性首先被读取。
+         2. 然后根据 properties 元素中的 resource 属性读取类路径下属性文件或根据 url 属性指定的路径读取属性文件，并覆盖已读取的同名属性。
+         3. 最后读取作为方法参数传递的属性，并覆盖已读取的同名属性。
+                - 因此，通过方法参数传递的属性具有最高优先级，resource/url 属性中指定的配置文件次之，最低优先级的是 properties 属性中指定的属性。-->
+	<!-- 
+	<properties resource="org/mybatis/example/config.properties">
+	  <property name="username" value="dev_user" />
+	  <property name="password" value="F2Fa3!33TYyg" />
+	</properties> -->
+
+    <!-- MyBatis 可以配置成适应多种环境，这种机制有助于将 SQL 映射应用于多种数据库之中，例如，开发、测试和生产环境需要有不同的配置；尽管可以配置多个环境，但每个 SqlSessionFactory 实例只能选择一种环境。 -->
+    <!-- 
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="JDBC" />
+            <dataSource type="POOLED">
+                <property name="driver" value="${jdbc.driver}" />
+                <property name="url" value="${jdbc.url}" />
+                <property name="username" value="${jdbc.username}" />
+                <property name="password" value="${jdbc.password}" />
+            </dataSource>
+        </environment>
+    </environments> -->
+    
+    <!-- 全局属性 MyBatis 中极为重要的设置，它们会改变 MyBatis 的运行时行为。 -->
+    <settings>
+        <!-- 全局地开启或关闭配置文件中的所有映射器已经配置的任何缓存。默认值 true -->
+        <setting name="cacheEnabled" value="true" />
+        <!-- 延迟加载的全局开关。当开启时，所有关联对象都会延迟加载。默认值 false -->
+        <setting name="lazyLoadingEnabled" value="false" />
+        <!-- 是否允许单一语句返回多结果集（需要驱动支持）。 默认值 true -->
+        <setting name="multipleResultSetsEnabled" value="true" />
+        <!-- 使用列标签代替列名。 默认值 true -->
+        <setting name="useColumnLabel" value="true" />
+        <!-- 允许 JDBC 支持自动生成主键，需要驱动支持。 默认值 false -->
+        <setting name="useGeneratedKeys" value="true" />
+        <!-- 指定 MyBatis 应如何自动映射列到字段或属性。 默认值PARTIAL。
+            NONE 表示取消自动映射；
+            PARTIAL 只会自动映射没有定义嵌套结果集映射的结果集；
+            FULL 会自动映射任意复杂的结果集（无论是否嵌套）。 -->
+        <setting name="autoMappingBehavior" value="PARTIAL" />
+        <!-- 指定发现自动映射目标未知列（或者未知属性类型）的行为。默认值NONE。
+            NONE: 不做任何反应
+            WARNING: 输出提醒日志 (日志等级必须设置为 WARN)
+            FAILING: 映射失败 (抛出 SqlSessionException) -->
+        <setting name="autoMappingUnknownColumnBehavior" value="WARNING" />
+        <!-- 配置默认的执行器。默认值SIMPLE。
+            SIMPLE 就是普通的执行器；
+            REUSE 执行器会重用预处理语句（prepared statements）； 
+            BATCH 执行器将重用语句并执行批量更新。 -->
+        <setting name="defaultExecutorType" value="SIMPLE" />
+        <!-- 设置超时时间，它决定驱动等待数据库响应的秒数。默认未设置 (null)。 -->
+        <!-- <setting name="defaultStatementTimeout" value="30" /> -->
+        <!-- 为驱动的结果集获取数量（fetchSize）设置一个提示值。此参数只可以在查询设置中被覆盖。 默认未设置 (null)。-->
+        <!-- <setting name="defaultFetchSize" value="100" /> -->
+        <!-- 允许在嵌套语句中使用分页（RowBounds）。如果允许使用则设置为 false。默认值 false -->
+        <setting name="safeRowBoundsEnabled" value="false" />
+        <!-- 是否开启自动驼峰命名规则（camel case）映射。默认值 false -->
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+        <!-- MyBatis 利用本地缓存机制（Local Cache）防止循环引用（circular references）和加速重复嵌套查询。 默认值为 SESSION -->
+        <setting name="localCacheScope" value="SESSION" />
+        <!-- 指定哪个对象的方法触发一次延迟加载。 -->
+        <setting name="lazyLoadTriggerMethods" value="equals,clone,hashCode,toString" />
+    </settings>
+    
+    <!-- 类型别名, 存在的意义仅在于用来减少类完全限定名的冗余。与spring整合时，通常在spring-mybatis.xml里配置typeAliasesPackage -->
+    <typeAliases>
+        <!-- <typeAlias alias="User" type="com.asiainfo.mybatis.entity.User"/> -->
+        <!-- <package name="com.asiainfo.mybatis.entity" /> -->
+    </typeAliases>
+    
+    <!-- 重写类型处理器或创建你自己的类型处理器来处理不支持的或非标准的类型。 具体做法为：实现 org.apache.ibatis.type.TypeHandler 接口， 
+                  或继承一个很便利的类 org.apache.ibatis.type.BaseTypeHandler， 然后可以选择性地将它映射到一个 JDBC 类型@MappedJdbcTypes(JdbcType.VARCHAR)。
+         spring整合时，通常在spring-mybatis.xml里配置typeHandlers -->
+    <typeHandlers>
+        <!--
+        <typeHandler handler="org.apache.ibatis.type.EnumOrdinalTypeHandler" javaType="com.example.entity.enums.ComputerState" />
+        <typeHandler handler="org.mybatis.example.ExampleTypeHandler" />
+        <package name="org.mybatis.example"/> -->
+	</typeHandlers>
+	
+	<!-- MyBatis 允许你在已映射语句执行过程中的某一点进行拦截调用。默认情况下，MyBatis 允许使用插件来拦截的方法调用包括：
+	       Executor (update, query)
+	       ParameterHandler (getParameterObject, setParameters)
+	       ResultSetHandler (handleResultSets, handleOutputParameters)
+	       StatementHandler (prepare, parameterize, batch, update, query) 
+	       spring整合时，通常在spring-mybatis.xml里配置plugins -->
+	<plugins>
+        <!-- 
+        <plugin interceptor="com.asiainfo.mybatis.interceptor.MyInterceptor">
+            <property name="welcome" value="hello world"/>
+        </plugin> -->
+    </plugins>
+    
+    <!-- 数据库厂商标识（databaseIdProvider） 
+         MyBatis 会加载不带 databaseId 属性和带有匹配当前数据库 databaseId 属性的所有语句。
+         spring整合时需要在spring-mybatis.xml里配置往SqlSessionFactoryBean里注入DatabaseIdProvider，否则会报找不到sql bound异常 -->
+    <databaseIdProvider type="DB_VENDOR" />
+    <!-- 
+    <databaseIdProvider type="DB_VENDOR">
+        <property name="MySQL" value="mysql" />
+        <property name="Oracle" value="oracle" />
+        <property name="SQL Server" value="sqlserver" />
+        <property name="DB2" value="db2" />
+    </databaseIdProvider> -->
+    
+    <!-- 与spring整合时，通常在spring-mybatis.xml里配置，两边同时配置xml mapper会冲突，报多个映射异常 -->
+    <mappers>
+        <!-- 使用相对于类路径的资源引用 -->
+        <!-- <mapper resource="com/asiainfo/mybatis/xml/mapper/UserMapper.xml" /> -->
+        <!-- 使用映射器接口实现类的完全限定类名 -->
+        <!-- <mapper class="com.asiainfo.mybatis.xml.dao.UserDao" /> -->
+        <!-- 将包内的映射器接口实现全部注册为映射器 -->
+        <!-- <package name="com.asiainfo.mybatis.xml.dao" /> -->
+    </mappers>
+</configuration>

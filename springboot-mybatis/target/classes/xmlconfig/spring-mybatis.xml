@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context 
+		http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!-- mybatis 多数据库支持 -->
+    <bean id="vendorProperties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+        <property name="properties">
+            <props>
+                <prop key="Oracle">oracle</prop>
+                <prop key="MySQL">mysql</prop>
+            </props>
+        </property>
+    </bean>
+    <bean id="databaseIdProvider" class="org.apache.ibatis.mapping.VendorDatabaseIdProvider">
+        <property name="properties" ref="vendorProperties"/>
+    </bean>
+    
+    <!-- 配置SqlSessionFactory -->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <!-- 注入数据库连接池 -->
+        <property name="dataSource" ref="dataSource" />
+        <!-- 配置MyBaties全局配置文件：mybatis-config.xml -->
+        <property name="configLocation" value="classpath:mybatis-config.xml" />
+        <!-- entity包使用SimpleClassName -->
+        <property name="typeAliasesPackage" value="com.asiainfo.mybatis.entity" />
+        <!-- 扫描mapper对应的xml文件 -->
+        <property name="mapperLocations" value="classpath:com/asiainfo/mybatis/xml/mapper/*.xml" />
+        <!-- 多数据库支持 -->
+        <property name="databaseIdProvider" ref="databaseIdProvider" />
+        <!-- 插件配置 -->
+        <property name="plugins">
+            <array>
+                <bean class="com.asiainfo.mybatis.interceptor.MyInterceptor">
+                    <property name="properties">
+                        <value>
+                            welcome=hello world
+                            dbtype=mysql
+                        </value>
+                    </property>
+                </bean>
+            </array>
+        </property>
+        <!-- 类型处理器 -->
+        <!-- <property name="typeHandlers">
+            <array>
+            </array>
+        </property> -->
+    </bean>
+    
+    <!-- 自动扫描Dao接口包，动态实现Dao接口，注入到spring容器中 -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <!-- 如果设置了该属性，那么MyBatis的接口只有包含该注解，才会被扫描进去。 -->
+        <!-- <property name="annotationClass" value="org.springframework.stereotype.Repository"/> -->
+        <!-- 扫描这个包以及它的子包下的所有映射接口类，用于生成MapperFactoryBean动态代理，多个包用逗号分隔 -->
+        <property name="basePackage" value="com.asiainfo.mybatis.xml.dao" />
+        <!-- 只有当你配置多数据源的时候，这时会有多个sqlSessionFactory，你就需要通过该属性来指定哪一个sqlSessionFactory -->
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
+    </bean>
+</beans>

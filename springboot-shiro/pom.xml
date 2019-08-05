@@ -1,0 +1,77 @@
+<?xml version="1.0"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.asiainfo.springboot.shiro</groupId>
+  <artifactId>springboot-shiro</artifactId>
+  <name>springboot-shiro</name>
+  <url>http://maven.apache.org</url>
+
+    <parent>
+        <groupId>com.asiainfo.springboot</groupId>
+        <artifactId>springboot-study</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <!-- shiro -->
+        <dependency>
+            <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-spring</artifactId>
+            <version>1.4.0</version>
+        </dependency>
+        
+		<!-- shiro ehcache -->
+		<dependency>
+		    <groupId>org.apache.shiro</groupId>
+		    <artifactId>shiro-ehcache</artifactId>
+		    <version>1.3.2</version>
+		</dependency>
+		<!-- ehchache -->
+		<dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-cache</artifactId>
+		</dependency>
+		<dependency>
+		    <groupId>net.sf.ehcache</groupId>
+		    <artifactId>ehcache</artifactId>
+		</dependency>
+        
+        <!-- jpa -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+        <!-- mysql -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+        </dependency>
+        
+        <!--swagger2-->
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+        </dependency>
+    </dependencies>
+    
+    <build>
+        <finalName>springboot-shiro</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+</project>

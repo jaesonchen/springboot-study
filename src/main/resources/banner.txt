@@ -1,3 +1,0 @@
-#启动时的信息提示，取代springboot自带的提示
-welcome to spring-boot!
-spring-boot: ${spring-boot.version}

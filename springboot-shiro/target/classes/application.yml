@@ -1,0 +1,16 @@
+spring:
+    application:
+        name: springboot-shiro
+    datasource:
+        url: jdbc:mysql://192.168.0.103:3306/shiro?useUnicode=true&characterEncoding=UTF-8&useSSL=false
+        username: root
+        password: root
+        driver-class-name: com.mysql.jdbc.Driver
+    jpa:
+        properties:
+            hibernate:
+                hbm2ddl:
+                    auto: update
+                show_sql: true
+                format_sql: true
+        database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
